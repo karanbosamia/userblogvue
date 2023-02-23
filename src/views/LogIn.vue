@@ -6,7 +6,7 @@
             <label for="staticEmail" class="col-md-1 col-form-label" style="font-size: 22px;">Username: </label>
             <div class="col-sm-10">
                 <input type="text" class="form-control col-md-offset-1 form-control-plaintext" id="username" name="username"
-                required="1" style="width: 300px;">
+                v-model="username" required="1" style="width: 300px;">
             </div>
         </div>
         <div class="form-group row col-md-offset-4">
@@ -31,7 +31,8 @@ export default defineComponent({
   name: 'LogIn',
   data() {
     return {
-        dataList: []
+        dataList: [],
+        username: '',
     }
   },
   props: {
@@ -60,7 +61,8 @@ export default defineComponent({
                 debugger;
                 if (loadData['data']['status'] == 'success') {
                     console.log('Successful login')
-                    this.$router.push('/dashboard')
+                    this.$router.push(`/dashboard/${this.username}`);
+                    console.log(loadData['data']['username']);
                 } else {
                     console.log(loadData['data']['status']);
                 }
@@ -79,6 +81,9 @@ nav{
     font-size: 20px;
 }
 div{
+    font-family: cursive;
+}
+button{
     font-family: cursive;
 }
 </style>

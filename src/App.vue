@@ -28,7 +28,7 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
-span nav div {
+span nav div button{
   font-family: cursive;
 }
 </style>

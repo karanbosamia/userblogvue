@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LogIn from '../views/LogIn.vue'
 import DashBoard from '../views/DashBoard.vue'
+import AddPost from '../views/AddPost.vue'
 
 const routes = [
   {
@@ -18,9 +19,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
-    path: '/dashboard',
+    path: '/dashboard/:username',
     name: 'DashBoard',
-    component: DashBoard
+    component: DashBoard,
+    props: true
   },
   {
     path: '/login',
@@ -37,6 +39,11 @@ const routes = [
     name: 'MyProfile',
     // component: MyProfile
   },
+  {
+    path: '/addpost',
+    name: 'AddPost',
+    component: AddPost
+  }
 ]
 
 const router = createRouter({
