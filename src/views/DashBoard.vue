@@ -26,7 +26,6 @@
 <script>
     // @ is an alias to /src
     import axios from 'axios'
-    // import { response } from 'express'
     import { defineComponent } from 'vue'
     
     export default defineComponent({
