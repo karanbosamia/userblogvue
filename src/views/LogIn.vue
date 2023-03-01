@@ -56,7 +56,7 @@ export default defineComponent({
             data: formData,
             headers: headers,
         })
-            if (loadData){
+            if (loadData) {
                 if (loadData['data']['status'] == 'success') {
                     console.log('Successful login')
                     this.$router.push(`/dashboard/${this.username}`);
