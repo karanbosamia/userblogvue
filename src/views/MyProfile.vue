@@ -2,14 +2,23 @@
     <body>
         <h1>
             <img :src="imageData" alt="My Image" style="border-radius: 75px; object-fit: cover; margin-left: 80px; width: 300px; height: 300px;"/>
-              <span class="statusButtons" style="width: 80px; height: 50px;">
-                Total Posts
+            <!-- <div class="section">
+                        <h3>Statistics</h3>
+                        <span class="badge">332</span> Following
+                        <span class="badge">124</span> Followers
+                        <span class="badge">620</span> Likes
+                    </div> -->
+              <span class="statusButtons badge" style="width: 200px; height: 50px;">
+                <span>Total Posts</span>
+                <p></p><span>10</span>
               </span>
-              <span class="statusButtons" style="width: 80px; height: 50px;">
+              <span class="statusButtons badge" style="width: 200px; height: 50px;">
                 Followed
+                <p></p><span><router-link to="/">Test Followers</router-link>10</span>
               </span>
-              <span class="statusButtons" style="width: 80px; height: 50px;">
+              <span class="statusButtons badge" style="width: 200px; height: 50px;">
                 Followed by
+                <p></p><span><router-link to="/">Test Following</router-link>10</span>
               </span>
         </h1>
     </body>
@@ -41,11 +50,10 @@
       async fetchImageData() {
         let headers = new Headers();
       
-              headers.append('Content-Type', "application/octet-stream");
-              headers.append('Accept', "application/octet-stream");
-              
-              headers.append('Access-Control-Allow-Origin', '*');
-              headers.append('Access-Control-Allow-Credentials', 'true');
+        headers.append('Content-Type', "application/octet-stream");
+        headers.append('Accept', "application/octet-stream");
+        headers.append('Access-Control-Allow-Origin', '*');
+        headers.append('Access-Control-Allow-Credentials', 'true');
         const profilePicture = await axios.get('http://127.0.0.1:8080/get/profile', {
           responseType: 'blob',
           headers: headers,
