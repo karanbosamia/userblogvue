@@ -4,6 +4,7 @@ import LogIn from '../views/LogIn.vue'
 import DashBoard from '../views/DashBoard.vue'
 import AddPost from '../views/AddPost.vue'
 import MyProfile from '../views/MyProfile.vue'
+import SearchUsers from '../views/SearchUsers.vue'
 
 const routes = [
   {
@@ -30,11 +31,11 @@ const routes = [
     name: 'LogIn',
     component: LogIn
   },
-  {
-    path: '/search',
-    name: 'Search',
-    // component: Search
-  },
+  // {
+  //   path: '/search',
+  //   name: 'Search',
+  //   component: Search
+  // },
   {
     path: '/myprofile',
     name: 'MyProfile',
@@ -44,6 +45,21 @@ const routes = [
     path: '/addpost',
     name: 'AddPost',
     component: AddPost
+  },
+  {
+    path: '/following',
+    name: 'Following',
+    // component: Following,
+  },
+  {
+    path: '/followers',
+    name: 'Followers',
+    // component: Followers,
+  },
+  {
+    path: '/search',
+    name: 'SearchUsers',
+    component: SearchUsers
   }
 ]
 
