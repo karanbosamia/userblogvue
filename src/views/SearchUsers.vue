@@ -45,32 +45,43 @@
             console.log(error)
             }
         },
-        // TODO CORS POLICY
-      async followUser(userId) {
-        let headers1 = {
+        async followUser(userId) {
+          axios.defaults.withCredentials = true; // Enable CORS with credentials
+
+          const headers = {
             'Content-Type': 'application/json',
-            'Accept': 'application/json' ,
-            'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': 'true'
-        }
-        await axios({
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers' : 'Origin, Content-Type, Accept'
+          };
+
+          await axios({
             method: 'post',
-            url: 'http://localhost:8080/api/follow',
-            headers: headers1,
-            data: { userId }
-        }).then(response => {
-          // Add the new following relationship to the followingIds array
-          this.followingIds.push(response.data.followingId)
-        }).catch(error => {
-          console.log(error)
-        })
+            url: 'http://localhost:8080/api/follow/'+userId,
+            headers: headers,
+            withCredentials: true, // Enable sending cookies with the request
+          }).then(response => {
+            // Add the new following relationship to the followingIds array
+            this.followingIds.push(response.data.followingId)
+          }).catch(error => {
+            console.log(error)
+          })
       },
       unfollowUser(userId) {
-        
-        
-        debugger;
-        axios.delete('http://localhost:8080/api/follow/' + userId).then(response => {
+        const headers = {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers' : 'Origin, Content-Type, Accept'
+        };
+        axios({
+          method: 'delete',
+          url: 'http://localhost:8080/api/unfollow/' + userId,
+          headers: headers,
+          withCredentials: true,
+        }).then(response => {
           // Remove the unfollowed user's relationship from the followingIds array
           const index = this.followingIds.indexOf(response.data.followingId)
           this.followingIds.splice(index, 1)
@@ -90,24 +101,21 @@
       }
     },
     async created() {
-      await this.getUsers();
-    //   this.getFollowers()
-    let headers = new Headers();
-      
-              headers.append('Content-Type', 'application/json');
-              headers.append('Accept', 'application/json');
-              
-              headers.append('Access-Control-Allow-Origin', '*');
-              headers.append('Access-Control-Allow-Credentials', 'true');
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Accept', 'application/json');
+      headers.append('Access-Control-Allow-Origin', '*');
+      headers.append('Access-Control-Allow-Credentials', 'true');
       await axios({
         url: 'http://localhost:8080/api/following',
         headers: headers,
         method: 'get'
-    }).then(response => {
+      }).then(response => {
         this.followingIds = response.data
       }).catch(error => {
         console.log(error)
       })
+      await this.getUsers();      
     }
   }
 </script>
