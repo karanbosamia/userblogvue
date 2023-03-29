@@ -56,16 +56,15 @@ export default defineComponent({
             data: formData,
             headers: headers,
         })
-            if (loadData) {
-                if (loadData['data']['status'] == 'success') {
-                    console.log('Successful login')
-                    this.$router.push(`/dashboard/${this.username}`);
-                    console.log(loadData['data']['username']);
-                } else {
-                    console.log(loadData['data']['status']);
-                }
+        if (loadData) {
+            if (loadData['data']['status'] == 'success') {
+                console.log('Successful login')
+                this.$router.push(`/dashboard/${this.username}`);
+                console.log(loadData['data']['username']);
+            } else {
+                alert(loadData['data']['status']);
             }
-
+        }
     }
   }
 })

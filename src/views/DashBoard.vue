@@ -5,19 +5,30 @@
             <nav style="float: right;">
               <router-link to="/search">Search</router-link> |
               <router-link to="/myprofile">My Profile</router-link> |
-              <router-link to="/logout">Logout</router-link>
+              <router-link to="/login" @click="logout">Logout</router-link>
             </nav>
         </h1>
+        <router-link to="/addpost">
+          <button type="button" class="addpostbutton btn btn-dark">Add Post</button>
+        </router-link>
         <div class="centered_div">
-  There are no posts in your feed.
-  <p>Connect with other users to see what they are posting</p>
-  <p>
-    <button type="button" class="btn btn-light" data-mdb-ripple-color="dark">Light</button>
-    <router-link to="/addpost">
-      <button type="button" class="addpostbutton btn btn-dark">Add Post</button>
-    </router-link>
-  </p>
-</div>
+
+        <p>Connect with other users to see what they are posting</p>
+        <p>
+
+        </p>
+        <div class="image-container-dashboard">
+          <div class="image-follower" v-for="item in allImages" :key="item">
+            <div class="image-follower" v-for="item_iter in item" :key="item_iter">
+              <span>User: {{ item_iter.name }}</span><br>
+              <span> Caption: {{ item_iter.caption }}</span>
+              <img :src="item_iter.image" alt="My Image" style="border-radius: 75px; object-fit: cover; margin-left: 80px; width: 1000px; height: 800px;"/>
+              <br>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
     </body>
   </router-view>
 
@@ -30,9 +41,13 @@
     
     export default defineComponent({
       name: 'DashBoard',
+      created(){
+        this.fetchFollowerPosts();
+      },
       data() {
         return {
             dataList: [],
+            allImages: {},
         }
       },
       props: {
@@ -42,14 +57,33 @@
         },
       },
       methods: {
+        logout() {
+          let headers = new Headers();
+
+          headers.append('Content-Type', 'application/json');
+          headers.append('Accept', 'application/json');
+          headers.append('Access-Control-Allow-Origin', '*');
+          headers.append('Access-Control-Allow-Credentials', 'true');
+
+          axios.post(
+            '/logout', {
+              headers: headers
+            }) // send a POST request to the Flask logout endpoint
+            .then(response => {
+              console.log(response.data);
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        },
         async loadData() {
             let headers = new Headers();
-    
+
             headers.append('Content-Type', 'application/json');
             headers.append('Accept', 'application/json');
             headers.append('Access-Control-Allow-Origin', '*');
             headers.append('Access-Control-Allow-Credentials', 'true');
-    
+
             const loadData = await axios({
                 method: 'post',
                 url: 'http://127.0.0.1:8080/fetchdata',
@@ -57,10 +91,26 @@
                 headers: headers,
             })
             console.log(loadData);
+        },
+        async fetchFollowerPosts() {
+          let headers = new Headers();
+
+          headers.append('Content-Type', "application/octet-stream");
+          headers.append('Accept', "application/octet-stream");
+          headers.append('Access-Control-Allow-Origin', '*');
+          headers.append('Access-Control-Allow-Credentials', 'true');
+          const posts = await axios.get('http://127.0.0.1:8080/get/followerposts', {
+            headers: headers,
+          })
+          if (posts) {
+            for (let posting in posts.data) {
+              this.allImages[posting] = posts.data[posting]
+            }
+          }
         }
       }
     })
-    </script>
+</script>
 
 <style>
 .centered_div {
@@ -94,9 +144,4 @@
   height: 100%;
   width: 135%;
 }
-/* .btn:hover {
-  background: rgb(0, 0, 0);
-  color: white;
-} */
-
 </style>
