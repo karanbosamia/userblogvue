@@ -1,5 +1,15 @@
 <template>
     <div>
+      <div>
+      <nav style="float: right;">
+              <router-link to="/search">Search</router-link> |
+              <router-link to="/myprofile">My Profile</router-link> |
+              <router-link to="/logout">Logout</router-link>
+            </nav>
+          </div>
+          <br>
+          <br>
+          <br>
       <h2>Search Followers</h2>
       <input type="text" v-model="searchQuery" placeholder="Search for followers...">
       <ul>
@@ -55,7 +65,6 @@
             'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
             'Access-Control-Allow-Headers' : 'Origin, Content-Type, Accept'
           };
-
           await axios({
             method: 'post',
             url: 'http://localhost:8080/api/follow/'+userId,
@@ -111,7 +120,7 @@
         headers: headers,
         method: 'get'
       }).then(response => {
-        this.followingIds = response.data
+        this.followingIds = response.data.follower_ids;
       }).catch(error => {
         console.log(error)
       })

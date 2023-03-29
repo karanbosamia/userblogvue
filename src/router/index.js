@@ -5,6 +5,8 @@ import DashBoard from '../views/DashBoard.vue'
 import AddPost from '../views/AddPost.vue'
 import MyProfile from '../views/MyProfile.vue'
 import SearchUsers from '../views/SearchUsers.vue'
+import UserFollowing from '../views/UserFollowing.vue'
+import UserFollowers from '../views/UserFollowers.vue'
 
 const routes = [
   {
@@ -21,6 +23,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
+    path: '/dashboard2',
+    name: 'DashBoard2',
+    component: DashBoard,
+    props: true
+  },
+  {
     path: '/dashboard/:username',
     name: 'DashBoard',
     component: DashBoard,
@@ -31,11 +39,6 @@ const routes = [
     name: 'LogIn',
     component: LogIn
   },
-  // {
-  //   path: '/search',
-  //   name: 'Search',
-  //   component: Search
-  // },
   {
     path: '/myprofile',
     name: 'MyProfile',
@@ -48,13 +51,13 @@ const routes = [
   },
   {
     path: '/following',
-    name: 'Following',
-    // component: Following,
+    name: 'UserFollowing',
+    component: UserFollowing,
   },
   {
     path: '/followers',
-    name: 'Followers',
-    // component: Followers,
+    name: 'UserFollowers',
+    component: UserFollowers,
   },
   {
     path: '/search',

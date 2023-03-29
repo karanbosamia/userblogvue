@@ -1,26 +1,31 @@
 <template>
     <body>
+      <nav style="float: right;">
+              <router-link to="/search">Search</router-link> |
+              <router-link to="/myprofile">My Profile</router-link> |
+              <router-link to="/logout">Logout</router-link>
+            </nav>
         <h1>
             <img :src="imageData" alt="My Image" style="border-radius: 75px; object-fit: cover; margin-left: 80px; width: 300px; height: 300px;"/>
-            <!-- <div class="section">
-                        <h3>Statistics</h3>
-                        <span class="badge">332</span> Following
-                        <span class="badge">124</span> Followers
-                        <span class="badge">620</span> Likes
-                    </div> -->
               <span class="statusButtons badge" style="width: 200px; height: 50px;">
                 <span>Total Posts</span>
-                <p></p><span>10</span>
+                <p></p><span>{{ totalPosts }}</span>
               </span>
               <span class="statusButtons badge" style="width: 200px; height: 50px;">
-                Followed
-                <p></p><span><router-link to="/">Test Followers</router-link>10</span>
+                Followers
+                <p></p><span><router-link to="/followers">{{ totalFollowers }}</router-link></span>
               </span>
               <span class="statusButtons badge" style="width: 200px; height: 50px;">
-                Followed by
-                <p></p><span><router-link to="/">Test Following</router-link>10</span>
+                Following
+                <p></p><span><router-link to="/following">{{ totalFollowing }}</router-link></span>
               </span>
         </h1>
+        <span style="width: 200px; height: 50px; text-align: center; font-size: 50px;"> Posts </span>
+        <div class="image-container">
+          <div class="image" v-for="item in allImages" :key="item">
+            <img :src="item" alt="My Image" style="border-radius: 75px; object-fit: cover; margin-left: 80px; width: 300px; height: 300px;"/>
+          </div>
+        </div>
     </body>
 </template>
   
@@ -37,11 +42,33 @@
           caption: '',
           postName: '',
           imageFile: Object,
-          imageData: Object
+          imageData: Object,
+          allImages: [],
+          totalFollowers: '',
+          totalPosts: '',
+          totalFollowing: '',
       }
     },
-    created() {
+    async created() {
       this.fetchImageData();
+      let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
+        headers.append('Access-Control-Allow-Origin', '*');
+        headers.append('Access-Control-Allow-Credentials', 'true');
+        await axios({
+          url: 'http://localhost:8080/api/following',
+          headers: headers,
+          method: 'get'
+        }).then(response => {
+          this.followingIds = response.data.follower_ids;
+          this.totalFollowing = this.followingIds.length;
+          this.followerIds = response.data.followed_ids;
+          this.totalFollowers = this.followerIds.length;
+        }).catch(error => {
+          console.log(error)
+        })
+        this.fetchUserPosts();
     },
     props: {
       msg: String,
@@ -63,6 +90,23 @@
           const url = URL.createObjectURL(blob);
           this.imageData = url;
         }
+      },
+      async fetchUserPosts() {
+        let headers = new Headers();
+      
+        headers.append('Content-Type', "application/octet-stream");
+        headers.append('Accept', "application/octet-stream");
+        headers.append('Access-Control-Allow-Origin', '*');
+        headers.append('Access-Control-Allow-Credentials', 'true');
+        const posts = await axios.get('http://127.0.0.1:8080/get/posts', {
+          headers: headers,
+        })
+        this.totalPosts = Object.keys(posts.data).length;
+        if (posts) {
+          for (let posting in posts.data) {
+            this.allImages.push(posts.data[posting].image)
+          }
+        }
       }
     }
   }
@@ -81,6 +125,23 @@
  bottom: 50%;
  margin-left: -500px;
  /* margin-top: 50px; */
+}
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 -10px;
+}
+
+.image {
+  width: calc(33.33% - 20px); 
+  margin: 10px; 
+  box-sizing: border-box; 
+}
+
+.image img {
+  max-width: 100%; 
+  height: auto; 
 }
 .addpostinput {
 /* background: red; */

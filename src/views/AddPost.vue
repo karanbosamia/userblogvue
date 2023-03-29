@@ -25,16 +25,14 @@
                     <button type="button" @click.prevent="onSubmit" class="btn btn-light" data-mdb-ripple-color="dark">Save</button>
                 </p>
             </div>
-            
           </form>
-  
-  </template>
+</template>
       
-  <script>
+<script>
       // @ is an alias to /src
       import axios from 'axios'
       import { defineComponent } from 'vue'
-      
+
       export default defineComponent({
         name: 'AddPost',
         data() {
@@ -51,13 +49,12 @@
         methods: {
           async loadData() {
               let headers = new Headers();
-      
+
               headers.append('Content-Type', 'application/json');
               headers.append('Accept', 'application/json');
-              
               headers.append('Access-Control-Allow-Origin', '*');
               headers.append('Access-Control-Allow-Credentials', 'true');
-      
+
               const loadData = await axios({
                   method: 'post',
                   url: 'http://127.0.0.1:8080/fetchdata',
@@ -79,13 +76,13 @@
               const formData = new FormData(form);
               formData['file']= this.imageFile
 
-              const sendData = await axios({
+              const postStatus = await axios({
                 method: 'post',
                 url: 'http://127.0.0.1:8080/postapost',
                 headers: headers,
                 data: formData,
               })
-              console.log(sendData);
+              alert(postStatus.data.status);
           },
           onFileChange(event) {
             const file = event.target.files[0];
@@ -94,52 +91,52 @@
         }
       }
     )
-      </script>
+</script>
   
-  <style>
-  .centered_div {
-     width: 1000px;
-     height: 1000px;
-     position: absolute;
-     text-align: center;
-     top: 50%;
-     left: 50%;
-     right: 50%;
-     bottom: 50%;
-     margin-left: -500px;
-     /* margin-top: 50px; */
-  }
-  .addpostinput {
-    /* background: red; */
-    -webkit-transition: background 300ms ease-in 0s; /* For Safari 3.0+ */
-    transition: background 300ms ease-in 0s;  /* Standard syntax */
-    width: 300px;
-    background: antiquewhite;
-    height: 51px;
-  }
-  .addpostinput::after {
-    height: 100%;
-    left: -35%;
-    top: 0;
-    transform: skew(50deg);
-    transition-duration: 0.2s;
-    transform-origin: top left;
-    width: 0;
-  }
-  .addpostinput:hover:after {
-    height: 100%;
-    width: 135%;
-  }
-  /* .btn:hover {
-    background: rgb(0, 0, 0);
-    color: white;
-  } */
-  
-  .addpostinput {
-    display: revert;
-    border: outset;
-  }
-  .addpostlabel {
-    text-align: right;
-  }
-  </style>
+<style>
+.centered_div {
+    width: 1000px;
+    height: 1000px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
+    margin-left: -500px;
+    /* margin-top: 50px; */
+}
+.addpostinput {
+  /* background: red; */
+  -webkit-transition: background 300ms ease-in 0s; /* For Safari 3.0+ */
+  transition: background 300ms ease-in 0s;  /* Standard syntax */
+  width: 300px;
+  background: antiquewhite;
+  height: 51px;
+}
+.addpostinput::after {
+  height: 100%;
+  left: -35%;
+  top: 0;
+  transform: skew(50deg);
+  transition-duration: 0.2s;
+  transform-origin: top left;
+  width: 0;
+}
+.addpostinput:hover:after {
+  height: 100%;
+  width: 135%;
+}
+/* .btn:hover {
+  background: rgb(0, 0, 0);
+  color: white;
+} */
+
+.addpostinput {
+  display: revert;
+  border: outset;
+}
+.addpostlabel {
+  text-align: right;
+}
+</style>
